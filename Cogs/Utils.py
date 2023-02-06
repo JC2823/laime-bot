@@ -3,7 +3,6 @@ from nextcord.ext import commands
 import os
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 from io import BytesIO
-from Components.Utils import ReportModal
 import requests
 
 class Utils(commands.Cog):
@@ -106,8 +105,7 @@ class Utils(commands.Cog):
 
     @nextcord.slash_command()
     async def feedback(self, interaction: nextcord.Interaction):
-        modal = ReportModal()
-        await interaction.response.send_modal(modal)
+        await interaction.send("En desarrollo...69")
 
     @nextcord.slash_command()
     async def cat(self, interaction: nextcord.Interaction):

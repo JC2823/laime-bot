@@ -43,11 +43,11 @@ class Welcome(commands.Cog):
             img.save(bytes, "png")
             bytes.seek(0)
 
-            channel = self.client.get_channel(os.environ.get("WELCOME_CHANNEL"))
+            channel = self.client.get_channel(int(os.environ.get("WELCOME_CHANNEL")))
 
-            await channel.send(content=f"👋 **Bienvenid@ {member.mention}!!!**", file=nextcord.File(fb=bytes, filename="welcome.png"))
+            await channel.send(content=f"👋 **Bienvenid@ {member.mention}!!!**", file=nextcord.File(fp=bytes, filename="welcome.png"))
 
-            roles = os.environ.get("WELCOME_ROLES")
+            roles = int(os.environ.get("WELCOME_ROLES"))
 
             if roles is not None:
                 for r in roles:

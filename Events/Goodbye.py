@@ -39,11 +39,11 @@ class Goodbye(commands.Cog):
         img.paste(pfp, (658, 134), mask=mask)
         bytes = BytesIO()
         img.save(bytes, "png")
-        bytes.seek()
+        bytes.seek(0)
 
-        channel = self.client.get_channel(os.environ.get("GOODBYE_CHANNEL"))
+        channel = self.client.get_channel(int(os.environ.get("GOODBYE_CHANNEL")))
 
-        await channel.send(content=f"😢 **Adios {member.mention}, esperamos que la hayas pasado bien en nuestro servidor**", file=nextcord.File(fb=bytes, filename="goodbye.png"))
+        await channel.send(content=f"😢 **Adios {member.mention}, esperamos que la hayas pasado bien en nuestro servidor**", file=nextcord.File(fp=bytes, filename="goodbye.png"))
 
 def setup(client):
     client.add_cog(Goodbye(client))
