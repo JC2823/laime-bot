@@ -53,6 +53,8 @@ class Welcome(commands.Cog):
                 for r in roles:
                     role = member.guild.get_role(r)
                     await member.add_roles(role)
+        else:
+            pass
 
 def setup(client):
     client.add_cog(Welcome(client))
