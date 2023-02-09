@@ -41,7 +41,7 @@ class Goodbye(commands.Cog):
         img.save(bytes, "png")
         bytes.seek(0)
 
-        channel = self.client.get_channel(int(os.environ.get("GOODBYE_CHANNEL")))
+        channel = self.client.get_channel(int(os.getenv("GOODBYE_CHANNEL")))
 
         await channel.send(content=f"😢 **Adios {member.mention}, esperamos que la hayas pasado bien en nuestro servidor**", file=nextcord.File(fp=bytes, filename="goodbye.png"))
 

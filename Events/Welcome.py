@@ -10,7 +10,7 @@ class Welcome(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member: nextcord.Member):
-        if os.environ.get("WELCOME_CHANNEL") is not None:
+        if os.getenv("WELCOME_CHANNEL") is not None:
             img = Image.open("Statics/Images/welcome-base.png")
             font = ImageFont.FreeTypeFont("Statics/Fonts/Inter.ttf", 96)
             font2 = ImageFont.FreeTypeFont("Statics/Fonts/Inter.ttf", 48)
@@ -43,11 +43,11 @@ class Welcome(commands.Cog):
             img.save(bytes, "png")
             bytes.seek(0)
 
-            channel = self.client.get_channel(int(os.environ.get("WELCOME_CHANNEL")))
+            channel = self.client.get_channel(int(os.getenv("WELCOME_CHANNEL")))
 
             await channel.send(content=f"👋 **Bienvenid@ {member.mention}!!!**", file=nextcord.File(fp=bytes, filename="welcome.png"))
 
-            roles = int(os.environ.get("WELCOME_ROLES"))
+            roles = int(os.getenv("WELCOME_ROLES"))
 
             if roles is not None:
                 for r in roles:

@@ -9,7 +9,7 @@ intents = nextcord.Intents.default()
 intents.members = True
 intents.presences = True
 
-client = commands.Bot(intents=intents, default_guild_ids=os.environ.get("TESTING_GUILDS"))
+client = commands.Bot(intents=intents, default_guild_ids=os.getenv("TESTING_GUILDS"))
 
 @client.event
 async def on_ready():
@@ -24,4 +24,4 @@ for file in os.listdir("./Events"):
         client.load_extension(f"Events.{file[:-3]}")
 
 if __name__ == '__main__':
-    client.run(os.environ.get("DISCORD_TOKEN"))
+    client.run(os.getenv("DISCORD_TOKEN"))
