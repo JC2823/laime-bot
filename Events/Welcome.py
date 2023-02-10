@@ -47,7 +47,7 @@ class Welcome(commands.Cog):
 
             await channel.send(content=f"👋 **Bienvenid@ {member.mention}!!!**", file=nextcord.File(fp=bytes, filename="welcome.png"))
 
-            roles = int(os.getenv("WELCOME_ROLES"))
+            roles = [int(role) for role in os.getenv("WELCOME_ROLES").split(' ')]
 
             if roles is not None:
                 for r in roles:
