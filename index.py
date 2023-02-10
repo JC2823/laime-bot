@@ -9,7 +9,7 @@ intents = nextcord.Intents.default()
 intents.members = True
 intents.presences = True
 
-client = commands.Bot(intents=intents, default_guild_ids=os.getenv("TESTING_GUILDS"))
+client = commands.Bot(intents=intents, default_guild_ids=[int(guild) for guild in os.getenv("TESTING_GUILDS").split(' ')])
 
 @client.event
 async def on_ready():
