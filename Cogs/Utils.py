@@ -107,18 +107,5 @@ class Utils(commands.Cog):
     async def feedback(self, interaction: nextcord.Interaction):
         await interaction.send("En desarrollo...69")
 
-    @nextcord.slash_command()
-    async def cat(self, interaction: nextcord.Interaction):
-        embed = nextcord.Embed(title="\🐱 MEEEOOWWW", color=0xffc01e)
-        embed.set_image(url=requests.get("https://aws.random.cat/meow").json()["file"])
-        await interaction.send(embed=embed)
-
-    @nextcord.slash_command()
-    async def dog(self, interaction: nextcord.Interaction):
-        embed = nextcord.Embed(title="\🐶 WOFF", color=0xffc01e)
-        embed.set_image(url=requests.get("https://dog.ceo/api/breeds/image/random").json()["message"])
-        await interaction.send(embed=embed)
-        
-
 def setup(client):
     client.add_cog(Utils(client))
