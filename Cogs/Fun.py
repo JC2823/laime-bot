@@ -39,7 +39,7 @@ class Fun(commands.Cog):
         bytes.seek(0)
         
         await interaction.send(content=f"{member.mention} es un {int(howgay*100)}% gay!!", file=nextcord.File(fp=bytes, filename="howgay.png"))
-    
+
     @nextcord.slash_command()
     async def cat(self, interaction: nextcord.Interaction):
         embed = nextcord.Embed(title="\🐱 MEEEOOWWW", color=0xffc01e)
@@ -50,6 +50,16 @@ class Fun(commands.Cog):
     async def dog(self, interaction: nextcord.Interaction):
         embed = nextcord.Embed(title="\🐶 WOFF", color=0xffc01e)
         embed.set_image(url=requests.get("https://dog.ceo/api/breeds/image/random").json()["message"])
+        await interaction.send(embed=embed)
+
+    @nextcord.slash_command(name="8ball")
+    async def _ball(self, interaction: nextcord.Interaction, question: str):
+        answers = ["Sí", "No", "¿Quien sabe?", "Tal vez", "Nunca sabremos", "Vuelve a preguntar, no te escuche bien"]
+        
+        embed = nextcord.Embed(title="\🎩 Bola mágica!", color=0xffc01e)
+        embed.add_field(name="\❔ Tu pregunta:", value=f"```{question}```", inline=False)
+        embed.add_field(name="\📄 Mi respuesta: ", value=f"```{random.choice(answers)}```")
+        
         await interaction.send(embed=embed)
 
 def setup(client):
