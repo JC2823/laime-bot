@@ -20,3 +20,13 @@ async def round_avatar(member: nextcord.Interaction, wh: tuple):
     pfp = ImageOps.fit(pfp, mask.size, centering=(0.5, 0.5))
     pfp.putalpha(mask)
     return (pfp, mask)
+
+def new_bar(draw, x, y, width, height, progress, bg=(129, 66, 97), fg=(255,122,0), fg2=(29,29,29)):
+    draw.rectangle((x+(height/2), y, x+width+(height/2), y+height), fill=fg2, width=10)
+    draw.ellipse((x+width, y, x+height+width, y+height), fill=fg2)
+    draw.ellipse((x, y, x+height, y+height), fill=fg2)
+    width = int(width*progress)
+
+    draw.rectangle((x+(height/2), y, x+width+(height/2), y+height), fill=fg, width=10)
+    draw.ellipse((x+width, y, x+height+width, y+height), fill=fg)
+    draw.ellipse((x, y, x+height, y+height), fill=fg)

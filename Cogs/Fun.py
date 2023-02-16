@@ -5,7 +5,7 @@ from io import BytesIO
 import random
 import requests
 
-from Utils.Images import round_avatar
+from Utils.Images import round_avatar, new_bar
 
 class Fun(commands.Cog):
     def __init__(self, client):
@@ -23,18 +23,8 @@ class Fun(commands.Cog):
         draw = ImageDraw.Draw(image)    
         
         draw.text((616, 115), f"Es {int(howgay*100)}% gay", (255, 255, 255), font=font)    
-        
-        def new_bar(x, y, width, height, progress, bg=(129, 66, 97), fg=(255,122,0), fg2=(29,29,29)):
-            draw.rectangle((x+(height/2), y, x+width+(height/2), y+height), fill=fg2, width=10)
-            draw.ellipse((x+width, y, x+height+width, y+height), fill=fg2)
-            draw.ellipse((x, y, x+height, y+height), fill=fg2)
-            width = int(width*progress)
-
-            draw.rectangle((x+(height/2), y, x+width+(height/2), y+height), fill=fg, width=10)
-            draw.ellipse((x+width, y, x+height+width, y+height), fill=fg)
-            draw.ellipse((x, y, x+height, y+height), fill=fg)
             
-        new_bar(414, 344, 1100, 163, howgay)
+        new_bar(draw, 414, 344, 1100, 163, howgay)
         
         bytes = BytesIO()
         image.save(bytes, "png")
