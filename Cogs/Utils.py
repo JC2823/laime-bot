@@ -3,7 +3,8 @@ from nextcord.ext import commands
 import os
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 from io import BytesIO
-import requests
+
+from Utils.Images import round_avatar
 
 class Utils(commands.Cog):
     def __init__(self, client):
@@ -30,23 +31,9 @@ class Utils(commands.Cog):
         draw.text((1257, 641), f"{str(0)}$", (178, 178, 178), font=sub_font)
         draw.text((1257, 786), f"{str(0)}$", (178, 178, 178), font=sub_font)
 
-        data = BytesIO(await member.display_avatar.read())
-        pfp = Image.open(data)
-        pfp = pfp.resize((300, 300))
-        h, w = pfp.size
+        pfp = await round_avatar(member, (300, 300))
 
-        x = (w - h)//2
-        pfp = pfp.crop((x, 0, x+h, h))
-
-        mask = Image.new('L', pfp.size)
-        mask_draw = ImageDraw.Draw(mask)
-        width, height = pfp.size
-        mask_draw.ellipse((0, 0, width, height), fill=255)
-
-        pfp = ImageOps.fit(pfp, mask.size, centering=(0.5, 0.5))
-        pfp.putalpha(mask)
-
-        img.paste(pfp, (456, 167), mask=mask)
+        img.paste(pfp[0], (456, 167), mask=pfp[1])
 
         bytes = BytesIO()
         img.save(bytes, "png")

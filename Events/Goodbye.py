@@ -2,7 +2,9 @@ import nextcord
 from nextcord.ext import commands
 import os
 from io import BytesIO
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFont
+
+from Utils.Images import round_avatar
 
 class Goodbye(commands.Cog):
     def __init__(self, client):
@@ -20,24 +22,9 @@ class Goodbye(commands.Cog):
             draw.text(((img.size[0]/2)-(font.getlength("Adios, nos vemos")/2), 459), "Adios, nos vemos", (255, 255, 255), font=font)
             draw.text(((img.size[0]/2)-(font2.getlength(member.name)/2), 577), member.name, (255, 255, 255), font=font2)
 
-            data = BytesIO(await member.display_avatar.read())
-            pfp = Image.open(data)
-            pfp = pfp.resize((300, 300))
-            h, w = pfp.size
-
-
-            x = (w - h)//2
-            pfp = pfp.crop((x, 0, x+h, h))
-
-            mask = Image.new('L', pfp.size)
-            mask_draw = ImageDraw.Draw(mask)
-            width, height = pfp.size
-            mask_draw.ellipse((0, 0, width, height), fill=255)
-
-            pfp = ImageOps.fit(pfp, mask.size, centering=(0.5, 0.5))
-            pfp.putalpha(mask)
+            pfp = await round_avatar(member, (300, 300))
+            img.paste(pfp[0], (658, 134), mask=pfp[1])
             
-            img.paste(pfp, (658, 134), mask=mask)
             bytes = BytesIO()
             img.save(bytes, "png")
             bytes.seek(0)

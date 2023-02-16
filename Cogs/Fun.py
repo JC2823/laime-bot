@@ -1,9 +1,11 @@
 import nextcord
 from nextcord.ext import commands
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 from io import BytesIO
 import random
 import requests
+
+from Utils.Images import round_avatar
 
 class Fun(commands.Cog):
     def __init__(self, client):
@@ -61,6 +63,42 @@ class Fun(commands.Cog):
         embed.add_field(name="\📄 Mi respuesta: ", value=f"```{random.choice(answers)}```")
         
         await interaction.send(embed=embed)
+
+    @nextcord.slash_command()
+    async def love(self, interaction: nextcord.Interaction, first: nextcord.Member, second: nextcord.Member):
+        image = Image.open("Statics/Images/love-base.png")
+        font = ImageFont.FreeTypeFont("Statics/Fonts/Inter.ttf", 80)
+        
+        love = random.randint(0, 101)
+        messages = ["Wow, creo que deberian distanciarse un poco...", "No creo que esten destinados a estar juntos", "Mejor se quedan como amigos", "Que bonita pareja formarian!", "WOW! que buena compatibilidad tienen!", "Son la pareja perfecta..."]
+        message = None
+        emote_list_100 = ["Statics/Emotes/enamorado.png", "Statics/Emotes/superestrella.png", "Statics/Emotes/sonrisa.png"]
+        emote_list_50 = ["Statics/Emotes/confundido.png", "Statics/Emotes/muerto.png"]
+        if love > 50:
+            emote = Image.open(random.choice(emote_list_100))
+            message = random.choice(messages[3:])
+        elif love < 50:
+            emote = Image.open(random.choice(emote_list_50))
+            message = random.choice(messages[:3])
+        emote = emote.resize((150, 150))
+        image.paste(emote, (971, 129), emote.convert("RGBA"))
+        
+        draw = ImageDraw.Draw(image)
+        length = font.getlength(f"{love}%")
+        draw.text(((image.size[0]/2)-(length/2), 339), f"{love}%", (255, 255, 255), font=font)
+        
+        pfp1 = await round_avatar(first, (349, 349))
+        pfp2 = await round_avatar(second, (349, 349))
+        
+        image.paste(im=pfp1[0], box=(511, 136), mask=pfp1[1])
+        image.paste(im=pfp2[0], box=(1231, 136), mask=pfp2[1])
+        
+        bytes = BytesIO()
+        image.save(bytes, "png")
+        bytes.seek(0)
+        
+        await interaction.send(content=f"Su compatibilidad es de {love}%! {message}", file=nextcord.File(fp=bytes, filename="love.png"))
+        
 
 def setup(client):
     client.add_cog(Fun(client))
