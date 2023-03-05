@@ -1,24 +1,4 @@
-import sqlite3
-from io import BytesIO
-
-conn = sqlite3.connect("poll.db")
-sqlite3.register_adapter(bool, int)
-sqlite3.register_converter("BOOLEAN", lambda v: bool(int(v)))
-
-conn.row_factory = sqlite3.Row
-
-cursor = conn.cursor()
-
-cursor.execute("""CREATE TABLE IF NOT EXISTS poll(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT,
-    guild TEXT,
-    channel TEXT,
-    message TEXT,
-    ended BOOLEAN DEFAULT FALSE,
-    options TEXT,
-    results BLOB
-)""")
+from ..Database import conn, cursor
 
 def getPollByMessageId(guild, message):
     result = cursor.execute("SELECT * FROM poll WHERE guild = ? AND message = ?", (guild, message)).fetchone()

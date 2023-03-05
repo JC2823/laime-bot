@@ -1,14 +1,4 @@
-import sqlite3
-
-conn = sqlite3.connect("economy.db")
-cursor = conn.cursor()
-
-cursor.execute("""CREATE TABLE IF NOT EXISTS economy(
-    id INTEGER PRIMARY KEY,
-    name TEXT,
-    wallet INTEGER DEFAULT 0,
-    bank INTEGER DEFAULT 0
-)""")
+from ..Database import conn, cursor
 
 def createUserAccount(id: int, money: int):
     result = cursor.execute("SELECT * FROM economy WHERE id = ?", [id]).fetchone()
@@ -20,11 +10,11 @@ def createUserAccount(id: int, money: int):
         print("test")
         return False
     
-def addMoneyWallet(id: int, money):
+def addMoneyToWallet(id: int, money):
     cursor.execute("UPDATE economy SET wallet = wallet + ? WHERE id = ?", (money, id))
     conn.commit()
 
-def addMoneyBank(id: int, money):
+def addMoneyToBank(id: int, money):
     cursor.execute("UPDATE economy SET bank = bank + ? WHERE id = ?", (money, id))
     conn.commit()
     
@@ -40,5 +30,6 @@ def getUserMoney(id: int):
     return result.fetchone()
   
 def removeMoney(id: int, money):
+    print(money)
     cursor.execute("UPDATE economy SET wallet = wallet - ? WHERE id = ?", (money, id))
     conn.commit()

@@ -1,7 +1,6 @@
 import nextcord
-import asyncio
 
-from Utils.Poll import createPoll
+from Database.Functions.Poll import createPoll
 
 class CreatePollModal(nextcord.ui.Modal):
     def __init__(self, channel: nextcord.TextChannel):

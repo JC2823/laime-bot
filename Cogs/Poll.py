@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 
 from Components.Poll import CreatePollModal
-from Utils.Poll import setPollResults, getPollResults, getPollList, getPollHistory, deletePoll, getPollById
+from Database.Functions.Poll import setPollResults, getPollResults, getPollList, getPollHistory, deletePoll, getPollById
 
 class Poll(commands.Cog):
     def __init__(self, client):
@@ -60,7 +60,7 @@ class Poll(commands.Cog):
         setPollResults(interaction.guild_id, id, bytes)
         deletePoll(id)
         
-        await interaction.send("Encuesta borrada!")
+        await interaction.response.send_message("Encuesta terminada!", ephemeral=True)
         
     @poll.subcommand(name="history")
     async def history(self, interaction: nextcord.Interaction):
@@ -72,7 +72,6 @@ class Poll(commands.Cog):
     async def results(self, interaction: nextcord.Interaction, id: int):
         bytes = getPollResults(interaction.guild_id, id)
         await interaction.send(file=nextcord.File(fp=BytesIO(bytes["results"]), filename="results.png"))
-            
-        
+      
 def setup(client):
     client.add_cog(Poll(client))
